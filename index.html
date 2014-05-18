@@ -1,0 +1,142 @@
+<html>
+<head>
+<style>
+body {
+	margin: 0;
+}
+.curtain {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100% 100%;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 50%;
+	height: 100%;
+	-webkit-transition: all 1s ease;
+}
+.left-curtain {
+	background-image: url(left.png);
+	left: 0;
+}
+.right-curtain {
+	background-image: url(right.png);
+	right: 0;
+}
+.front-curtain {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-image: url(bg.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	pointer-events: none;
+
+}
+.left-curtain.closed {
+	left: 0;
+}
+.right-curtain.closed {
+	right: 0;
+}
+.left-curtain.open {
+	left: -50%;
+}
+.right-curtain.open {
+	right: 50%;
+}
+.dragging {
+	-webkit-transition: none;
+}
+
+#reveal {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	-webkit-transform: scale(0.6);
+
+	background-image: url(pkw_logo.png);
+	background-repeat: no-repeat;
+	background-position:center center;
+}
+</style>
+</head>
+<body>
+
+<iframe id="reveal"></iframe>
+<div class="curtain left-curtain"></div>
+<div class="curtain right-curtain"></div>
+<div class="front-curtain"></div>
+<script>
+var posX = 0;
+var dragging = false;
+var leftCurtain;
+var rightCurtain;
+var dragFrom = null;
+
+function startDrag(e) {
+	posX = e.pageX;
+	dragging = true;
+	if (posX < window.innerWidth / 2) {
+		dragFrom = "left";
+	} else {
+		dragFrom = "right";
+	}
+	leftCurtain.classList.add("dragging");
+	rightCurtain.classList.add("dragging");
+}
+
+function drag(e) {
+	if (!dragging) return;
+	if (dragFrom == "left") {
+		diffX = e.pageX - posX;
+	} else {
+		diffX = -e.pageX + posX;
+	}
+	if (diffX > 0) {
+		diffX = 0;
+	}
+	leftCurtain.style.left = diffX + "px";
+	rightCurtain.style.right = diffX + "px";
+}
+
+function endDrag(e) {
+	dragging = false;
+	posX = e.pageX;
+	console.log(posX);
+
+	if (posX < window.innerWidth * 0.25 || posX > window.innerWidth * 0.75) {
+		leftCurtain.style.left = "-50%";
+		rightCurtain.style.right = "-50%";
+	} else {
+		leftCurtain.style.left = "0";
+		rightCurtain.style.right = "0";
+	}
+
+	leftCurtain.classList.remove("dragging");
+	rightCurtain.classList.remove("dragging");
+}
+
+leftCurtain = document.querySelector(".left-curtain");
+rightCurtain = document.querySelector(".right-curtain");
+window.addEventListener("mousedown", startDrag);
+window.addEventListener("mousemove", drag);
+window.addEventListener("mouseup", endDrag);
+
+window.addEventListener("mousedown", startDrag);
+window.addEventListener("mousemove", drag);
+window.addEventListener("mouseup", endDrag);
+
+document.getElementById("reveal").src = document.location.hash.substring(1);
+
+</script>
+</body>
+</html>
