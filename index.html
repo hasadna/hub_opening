@@ -76,6 +76,7 @@ body {
 <div class="curtain left-curtain"></div>
 <div class="curtain right-curtain"></div>
 <div class="front-curtain"></div>
+<audio id="audiotag1" src="./music.wav" preload="auto"></audio>
 <script>
 var posX = 0;
 var dragging = false;
@@ -126,12 +127,17 @@ function endDrag(e) {
 	rightCurtain.classList.remove("dragging");
 }
 
+function playMusic(e) {
+    document.getElementById('audiotag1').play();
+
+}
+
 leftCurtain = document.querySelector(".left-curtain");
 rightCurtain = document.querySelector(".right-curtain");
 window.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
 window.addEventListener("mouseup", endDrag);
-
+window.addEventListener("mousedown", playMusic);
 window.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
 window.addEventListener("mouseup", endDrag);
